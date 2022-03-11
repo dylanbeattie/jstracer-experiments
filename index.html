@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JSTracer</title>
+    <script type="module" src="tracer.js" />
+</head>
+
+<body>
+    <div id="rendered"></div>
+    <form name="controls">
+        Camera's Position: &lt;<input type="textbox" id="camx" value="0" size="4">,<input type="textbox" id="camy"
+            value=".3" size="4">,<input type="textbox" id="camz" value="-4" size="4">> (Sphere is placed at the origin
+        with a radius of 1 unit.)<br>
+        Resolution: <input type="textbox" id="res" value="40" size="5"> (Try 40 for starters, don't go too much higher
+        unless you're really patient and have a good machine.)<br>
+        <!-- Pixel Size: <input type="textbox" id="pixelsize" value="1" size="5"> (Since this can't handle very large resolutions, change this number to "stretch" the image.)<br> -->
+        Anti-Alias threshold: <input type="textbox" id="aathresh" value=".3" size="5"> (1 = no AA, 0 = every "pixel"
+        AA'ed)<br>
+        Anti-Alias depth: <input type="textbox" id="aadepthval" value="3" size="5"> (How many extra samples for AA'ed
+        pixels? (The number you enter will be squared.) Don't go much higher than 3 with this one.)<br>
+
+        <p>Note: While rendering, the status bar will display the percentage that has been rendered. Some browsers may
+            freeze up during this process and stop updating the status bar. Don't worry about it. If your browser says
+            that a script is causing the page to be slow, and asks if you want to abort the script, click "no" if you
+            don't want to stop the render.</p>
+        <p>The render process may take up quite a bit of memory (at a resolution of 100, Internet Explorer 6.0 took up
+            30 MB at the end). If your machine is low on memory, start with a low resolution and no anti-aliasing.</p>
+
+        <input type="button" value="Render"
+            onclick="xres=yres=eval(document.controls.res.value);aathreshold=eval(document.controls.aathresh.value);aadepth=eval(document.controls.aadepthval.value); raytrace();">
+    </form>
+</body>
+
+</html>
