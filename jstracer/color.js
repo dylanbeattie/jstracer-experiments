@@ -2,22 +2,25 @@ import Vector from './vector.js';
 
 class Material {
     getColorAt = point => Color.Grey;
+    constructor(reflection) {
+        this.reflection = reflection ?? 0;
+    }
 }
 
 class Chessboard extends Material {
-    constructor(color1, color2) {
+    constructor(material1, material2) {
         super();
-        this.color1 = color1;
-        this.color2 = color2;
+        this.material1 = material1;
+        this.material2 = material2;
     }
     getColorAt = point => {
         let ax = Math.abs(Math.round(point.x) % 2);
         let ay = Math.abs(Math.round(point.y) % 2);
         let az = Math.abs(Math.round(point.z) % 2);
         if (ay == 0) {
-            return (ax == az ? this.color1 : this.color2);
+            return (ax == az ? this.material1.getColorAt(point) : this.material2.getColorAt(point));
         } else {
-            return (ax == az ? this.color2 : this.color1);
+            return (ax == az ? this.material2.getColorAt(point) : this.material1.getColorAt(point));
         }
     }
 }
@@ -31,8 +34,8 @@ class Color extends Material {
     static Grey = new Color(0.5, 0.5, 0.5);
     clamp = value => (value > 1 ? 1 : value < 0 ? 0 : value);
 
-    constructor(r, g, b) {
-        super();
+    constructor(r, g, b, reflection) {
+        super(reflection);
         this.r = r;
         this.g = g;
         this.b = b;

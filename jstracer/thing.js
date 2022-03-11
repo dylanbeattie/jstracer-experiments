@@ -13,6 +13,13 @@ export class Thing {
         let color = this.material.getColorAt(point);
         let toreturn = color.scale(AMBIENCE);
         let normal = this.getNormalAt(point);
+        let reflectiondirection;
+        if (this.material.reflection) {
+            let inverse = direction.invert();
+            reflectiondirection = inverse.add(normal.scale(normal.dot(inverse)).add(direction).scale(2));
+            let reflectedcolor = new Ray(point, reflectiondirection).trace(scene);
+            toreturn = toreturn.add(reflectedcolor.scale(this.material.reflection));
+        }
         scene.lights.forEach(light => {
             let lightDirection = light.position.add(point.invert().normalize());
             let cosangle = normal.dot(lightDirection);
@@ -40,6 +47,13 @@ export class Thing {
                 if (!shadowed) {
                     let lighting = color.multiply(light.color).scale(cosangle);
                     toreturn = toreturn.add(lighting);
+                    if (this.material.reflection) {
+                        let specular = reflectiondirection.dot(lightDirection);
+                        if (specular > 0) {
+                            specular = Math.pow(specular, 5);
+                            toreturn = toreturn.add(light.color.scale(specular * .0001));
+                        }
+                    }
                 }
             }
         });

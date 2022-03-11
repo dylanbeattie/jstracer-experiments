@@ -7,7 +7,7 @@ class RayTracer {
     constructor(canvas) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
-        this.camera = new Camera(new Vector(5, 5, -20), new Vector(0, 0, 0), 4, 3);
+        this.camera = new Camera(new Vector(-1, 1, -2), new Vector(0, 0, 0), 4, 3);
         this.scene = new Scene();
     }
     trace() {
