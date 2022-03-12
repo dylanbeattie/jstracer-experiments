@@ -1,6 +1,7 @@
 import Vector from './vector.js';
 import { AMBIENCE, THRESHOLD } from './settings.js';
 import { Ray } from "./ray.js";
+import { Color } from "./color.js";
 
 export class Thing {
     constructor(material) {
@@ -21,7 +22,7 @@ export class Thing {
             toreturn = toreturn.add(reflectedcolor.scale(this.material.reflection));
         }
         scene.lights.forEach(light => {
-            let lightDirection = light.position.add(point.invert().normalize());
+            let lightDirection = light.position.add(point.invert()).normalize();
             let cosangle = normal.dot(lightDirection);
             if (cosangle > 0) {
                 let shadowed = false;
@@ -50,8 +51,8 @@ export class Thing {
                     if (this.material.reflection) {
                         let specular = reflectiondirection.dot(lightDirection);
                         if (specular > 0) {
-                            specular = Math.pow(specular, 5);
-                            toreturn = toreturn.add(light.color.scale(specular * .0001));
+                            specular = Math.pow(specular, 10);
+                            toreturn = toreturn.add(light.color.scale(specular * .5));
                         }
                     }
                 }

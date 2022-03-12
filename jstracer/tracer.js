@@ -7,7 +7,6 @@ class RayTracer {
     constructor(canvas) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
-        this.camera = new Camera(new Vector(-1, 1, -2), new Vector(0, 0, 0), 4, 3);
         this.scene = new Scene();
     }
     trace() {
@@ -18,7 +17,7 @@ class RayTracer {
             for (let yPixel = 0; yPixel < yRes; yPixel += STEP) {
                 let x = (xPixel / xRes) - 0.5;
                 let y = (yPixel / yRes) - 0.5;
-                var color = this.camera.trace(this.scene, x, y).clip();
+                var color = this.scene.trace(x, y);
                 this.ctx.fillStyle = color.toHexColor();
                 this.ctx.fillRect(xPixel, yPixel, STEP, STEP);
             }
