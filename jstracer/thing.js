@@ -4,22 +4,28 @@ import { Ray } from "./ray.js";
 import { Color } from "./color.js";
 
 export class Thing {
-    constructor(material) {
-        this.material = material;
+    constructor(texture) {
+        this.texture = texture;
     }
+
     intersects = (ray) => true;
+
     findIntersections = (ray) => [];
+
     getNormalAt = point => Vector.O;
+
     getColorAt = (point, direction, scene) => {
-        let color = this.material.getColorAt(point);
+        let color = this.texture.getColorAt(point);
         let toreturn = color.scale(AMBIENCE);
         let normal = this.getNormalAt(point);
-        let reflectiondirection;
-        if (this.material.reflection) {
+        let reflectionDirection;
+        let reflectionAmount = this.texture.finish.reflection;
+        if (reflectionAmount) {
             let inverse = direction.invert();
-            reflectiondirection = inverse.add(normal.scale(normal.dot(inverse)).add(direction).scale(2));
-            let reflectedcolor = new Ray(point, reflectiondirection).trace(scene);
-            toreturn = toreturn.add(reflectedcolor.scale(this.material.reflection));
+            reflectionDirection = inverse.add(normal.scale(normal.dot(inverse)).add(direction).scale(2));
+            let reflectionRay = new Ray(point, reflectionDirection);
+            let reflectedColor = reflectionRay.trace(scene);
+            toreturn = toreturn.add(reflectedColor.scale(reflectionAmount));
         }
         scene.lights.forEach(light => {
             let lightDirection = light.position.add(point.invert()).normalize();
@@ -48,8 +54,8 @@ export class Thing {
                 if (!shadowed) {
                     let lighting = color.multiply(light.color).scale(cosangle);
                     toreturn = toreturn.add(lighting);
-                    if (this.material.reflection) {
-                        let specular = reflectiondirection.dot(lightDirection);
+                    if (this.texture.material.reflection) {
+                        let specular = reflectionDirection.dot(lightDirection);
                         if (specular > 0) {
                             specular = Math.pow(specular, 10);
                             toreturn = toreturn.add(light.color.scale(specular * .5));

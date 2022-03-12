@@ -1,0 +1,52 @@
+{
+    "camera": {
+        "location": [
+            0,
+            0,
+            0
+        ],
+        "look_at": [
+            0,
+            0,
+            0
+        ]
+    },
+    "objects": [
+        {
+            "type": "sphere",
+            "position": [
+                0,
+                0,
+                0
+            ],
+            "radius": 1,
+            "material": {
+                "color": [
+                    0,
+                    1,
+                    0,
+                    0
+                ],
+                "finish": {
+                    "ambient": 0.1,
+                    "diffuse": 0.5,
+                    "reflection": 0.2
+                }
+            }
+        }
+    ],
+    "lights": [
+        {
+            "position": [
+                2,
+                5,
+                -5
+            ],
+            "color": [
+                1,
+                1,
+                1
+            ]
+        }
+    ]
+}

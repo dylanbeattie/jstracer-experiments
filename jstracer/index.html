@@ -12,9 +12,10 @@
 <script type="module" src="tracer.js"></script>
 <script type="module">
   import RayTracer from './tracer.js';
-  var canvas = document.getElementById('myCanvas');
-  var tracer = new RayTracer(canvas);
-  tracer.trace();
+  let canvas = document.getElementById('myCanvas');
+  let tracer = new RayTracer(canvas);
+  let ready = (fn) => (document.readyState != 'loading' ? fn() : document.addEventListener('DOMContentLoaded', fn));
+  ready(() => tracer.trace());
 </script>
 
 </html>
