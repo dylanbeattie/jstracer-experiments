@@ -5,6 +5,7 @@ class Finish {
         this.ambient = options.ambient ?? 0.3;
         this.diffuse = options.diffuse ?? 0.7;
         this.reflection = options.reflection ?? 0;
+        this.opacity = options.opacity ?? 1;
     }
     static Default = new Finish();
 }

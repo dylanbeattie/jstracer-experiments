@@ -6,16 +6,47 @@
 </head>
 
 <body>
-  <canvas style="width: 600px; height: 450px; background-color: #000;" width="600" height="450" id="myCanvas">
+  <canvas style="width: 800px; height: 600px; background-color: #000;" width="800" height="600" id="myCanvas">
   </canvas>
+  <br />
+  <button id="goButton">GO</button>
+  <button id="stopButton">STOP</button>
 </body>
-<script type="module" src="tracer.js"></script>
 <script type="module">
-  import RayTracer from './tracer.js';
-  let canvas = document.getElementById('myCanvas');
-  let tracer = new RayTracer(canvas);
+  function makeHandler(canvas) {
+    var ctx = canvas.getContext('2d');
+    return function (e) {
+      switch (e.data.message) {
+        case 'row':
+          let step = e.data.step;
+          var index = 0;
+          for (var x = 0; x < canvas.width; x += step) {
+            let color = `rgb(${e.data.row[index++]},${e.data.row[index++]},${e.data.row[index++]})`;
+            ctx.fillStyle = color;
+            ctx.fillRect(x, e.data.y, step, step);
+          }
+          break;
+      }
+    };
+  }
+  function go() {
+    console.log("Go! Yay!");
+    let canvas = document.getElementById('myCanvas');
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    window.worker = new Worker('worker.js', { type: "module" });
+    window.worker.addEventListener('message', makeHandler(canvas));
+    window.worker.postMessage({ command: 'start', width: canvas.width, height: canvas.height });
+  }
   let ready = (fn) => (document.readyState != 'loading' ? fn() : document.addEventListener('DOMContentLoaded', fn));
-  ready(() => tracer.trace());
+  ready(go);
+  document.getElementById('stopButton').addEventListener("click", () => {
+    if (window.worker && window.worker.terminate) window.worker.terminate();
+    delete window.worker;
+  });
+  document.getElementById('goButton').addEventListener("click", go);
 </script>
+
 
 </html>

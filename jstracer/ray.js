@@ -6,7 +6,8 @@ export class Ray {
         this.start = start;
         this.direction = direction.normalize();
     }
-    trace(scene) {
+    trace(scene, depth = 0) {
+        if (depth > 25) return Color.Black;
         let distance = -1;
         let intersector = null;
         for (var i = 0; i < scene.things.length; i++) {
@@ -25,6 +26,6 @@ export class Ray {
         }
         if (distance == -1) return new Color(0, 0, 0);
         var intersectionPoint = this.start.add(this.direction.scale(distance));
-        return intersector.getColorAt(intersectionPoint, this.direction, scene);
+        return intersector.getColorAt(intersectionPoint, this.direction, scene, depth + 1);
     }
 }

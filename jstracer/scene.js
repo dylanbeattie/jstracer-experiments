@@ -10,16 +10,26 @@ export class Scene {
         return this.camera.trace(this, x, y).clip();
     }
     constructor() {
-        this.camera = new Camera(new Vector(2, 2, -5), new Vector(0, 1, 0), 2, 1.5);
+        this.camera = new Camera(new Vector(2, 1, -5), new Vector(0, 1, 0), 2, 1.5);
         this.lights = [
             new Light(new Vector(-10, 10, -10), Textures.Color.Red),
             new Light(new Vector(0, 10, -10), Textures.Color.Green),
             new Light(new Vector(10, 10, -10), Textures.Color.Blue)
         ];
 
+        let glass = new Textures.Texture(
+            Textures.Color.White,
+            new Textures.Finish({ opacity: 0.2, reflection: 0.1, refraction: 1.2 })
+        );
+
+
         this.things = [
-            new Sphere(Vector.O, 100, new Textures.Texture(Textures.Color.Black, new Textures.Finish({ reflection: 0 }))),
-            new Sphere(new Vector(-2, 1, 0), 1, new Textures.Texture(Textures.Color.White, new Textures.Finish({ reflection: 1 }))),
+            new Sphere(Vector.O, 100, new Textures.Texture(Textures.Color.Blue)),
+            new Plane(new Vector(0, 1, 0), 0, new Textures.Texture(Textures.Color.Green)),
+            // new Sphere(Vector.O, 100, new Textures.Texture(Textures.Color.Black, new Textures.Finish({ reflection: 0 }))),
+            // new Sphere(new Vector(-2, 1, 0), 1, new Textures.Texture(Textures.Color.White, new Textures.Finish({ reflection: 1 }))),
+            new Sphere(new Vector(0, 1, 0), 1, glass),
+            // new Sphere(new Vector(-2, 1, 2), 1, new Textures.Texture(Textures.Color.White, new Textures.Finish({ opacity: 0.8, refraction: 1.2 }))),
             //            new Sphere(new Vector(0, 1, 0), 1, new Color(0, 1, 0, 0.5)),
             // new Sphere(new Vector(0, 1, 0), 1, new Rings({
             //     0: Color.Black,
@@ -32,7 +42,7 @@ export class Scene {
             //     //1: Color.Red
             // })),
             //     new Sphere(new Vector(2, 1, 0), 1, new Color(0, 0, 1, 0.5)),
-            new Plane(new Vector(0, 1, 0), 0, new Textures.Texture(new Textures.Tiles(Textures.Color.Black, Textures.Color.White)))
+            //new Plane(new Vector(0, 1, 0), 0, new Textures.Texture(new Textures.Tiles(Textures.Color.Black, Textures.Color.White)))
         ];
     }
 }
