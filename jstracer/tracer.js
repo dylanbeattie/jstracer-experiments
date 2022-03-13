@@ -15,7 +15,7 @@ class RayTracer {
         let row;
         const STEP = 1;
         for (let yPixel = 0; yPixel < yRes; yPixel += STEP) {
-            row = new Uint8Array(yRes * 3);
+            row = new Uint8Array(xRes * 3);
             let index = 0;
             for (let xPixel = 0; xPixel < xRes; xPixel += STEP) {
                 let x = (xPixel / xRes) - 0.5;

@@ -1,4 +1,5 @@
 class Vector {
+
     constructor(x, y, z) {
         this.x = x;
         this.y = y;
@@ -15,7 +16,8 @@ class Vector {
 
     /** The unary vector <1,1,1> */
     static U = new Vector(1, 1, 1);
-    toString = () => `<${this.x},${this.y},${this.z}>`;
+
+    toString = () => `<${Math.round(this.x * 10000) / 10000},${Math.round(this.y * 10000) / 10000},${Math.round(this.z * 10000) / 10000}>`;
 
     /** return the dot-product of this vector and that vector */
     dot = (that) => this.x * that.x + this.y * that.y + this.z * that.z;

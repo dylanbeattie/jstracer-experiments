@@ -5,6 +5,7 @@ class Finish {
         this.ambient = options.ambient ?? 0.3;
         this.diffuse = options.diffuse ?? 0.7;
         this.reflection = options.reflection ?? 0;
+        this.refraction = options.refraction ?? 1;
         this.opacity = options.opacity ?? 1;
     }
     static Default = new Finish();
@@ -19,10 +20,7 @@ class Texture {
 }
 
 class Material {
-    getColorAt = point => Color.Grey;
-    constructor(reflection) {
-        this.reflection = reflection ?? 0;
-    }
+    getColorAt = point => Color.Grey; constructor() { }
 }
 
 class MaterialMap {
@@ -85,18 +83,19 @@ class Color extends Material {
 
     static White = new Color(1, 1, 1);
     static Black = new Color(0, 0, 0);
-    static Grey = new Color(0.5, 0.5, 0.5);
+    static Gray50 = new Color(0.5, 0.5, 0.5);
     static Red = new Color(1, 0, 0);
     static Green = new Color(0, 1, 0);
     static Blue = new Color(0, 0, 1);
 
     clamp = value => (value > 1 ? 1 : value < 0 ? 0 : value);
 
-    constructor(r, g, b) {
+    constructor(r, g, b, a) {
         super();
         this.r = r;
         this.g = g;
         this.b = b;
+        this.a = a;
     }
 
     clip = function () {

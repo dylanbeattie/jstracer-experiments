@@ -164,9 +164,7 @@
                             intersections = objs[b].findintersections(shadowray);
                             for (var c = 0; c < intersections.length; c++) {
                                 if (intersections[c] > accuracy) {
-                                    if (intersections[c] <= dist) {
-                                        shadowed = true;
-                                    }
+                                    shadowed ||= (intersections[c] <= dist);
                                     break;
                                 }
                             }

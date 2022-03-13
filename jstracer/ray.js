@@ -7,7 +7,7 @@ export class Ray {
         this.direction = direction.normalize();
     }
     trace(scene, depth = 0) {
-        if (depth > 25) return Color.Black;
+        if (depth > 5) return Color.Black;
         let distance = -1;
         let intersector = null;
         for (var i = 0; i < scene.things.length; i++) {
