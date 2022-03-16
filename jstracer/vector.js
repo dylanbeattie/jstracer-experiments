@@ -1,9 +1,15 @@
 class Vector {
 
     constructor(x, y, z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        if (y == undefined && z == undefined && x.length == 3) {
+            this.x = x[0];
+            this.y = x[1];
+            this.z = x[2]
+        } else {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
     }
     /** the unit X vector <1,0,0> */
     static X = new Vector(1, 0, 0);

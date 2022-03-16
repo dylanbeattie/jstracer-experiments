@@ -1,4 +1,5 @@
 import RayTracer from './tracer.js';
+import { Scene } from './scene.js';
 
 self.addEventListener('message', function (msg) {
     var data = msg.data;
@@ -7,7 +8,8 @@ self.addEventListener('message', function (msg) {
         case 'start':
             console.log('Starting trace...');
             let tracer = new RayTracer(data.width, data.height);
-            tracer.trace((y, row, step) => self.postMessage({ message: 'row', y: y, row: row, step: step }));
+            let scene = Scene.Parse(data.scene);
+            tracer.trace(scene, (y, row, step) => self.postMessage({ message: 'row', y: y, row: row, step: step }));
             self.close();
             break;
         // case 'stop':

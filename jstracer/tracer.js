@@ -7,9 +7,8 @@ class RayTracer {
     constructor(width, height) {
         this.width = width;
         this.height = height;
-        this.scene = new Scene();
     }
-    trace(callback) {
+    trace(scene, callback) {
         let xRes = this.width;
         let yRes = this.height;
         let row;
@@ -20,7 +19,7 @@ class RayTracer {
             for (let xPixel = 0; xPixel < xRes; xPixel += STEP) {
                 let x = (xPixel / xRes) - 0.5;
                 let y = (yPixel / yRes) - 0.5;
-                let pixelColor = this.scene.trace(x, y);
+                let pixelColor = scene.trace(x, y);
                 row[index++] = Math.floor(pixelColor.r * 255);
                 row[index++] = Math.floor(pixelColor.g * 255);
                 row[index++] = Math.floor(pixelColor.b * 255);

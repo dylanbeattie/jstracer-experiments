@@ -67,72 +67,72 @@ export class Thing {
         let reflectionDirection = this.reflect(direction, normal);
         let transparent = this.texture.material.a;
         let reflective = (this.texture.finish.reflection);
-        if (transparent || reflective) {
-            // if (transparent) {
-            //     let continuationRay = new Ray(point.add(direction.scale(0.0001)), direction);
-            //     let transparencyColor = continuationRay.trace(scene, depth);
-            //     toreturn = toreturn.scale(this.texture.finish.opacity).add(transparencyColor.scale(transparent));
-            // }
+        // if (transparent || reflective) {
+        //     // if (transparent) {
+        //     //     let continuationRay = new Ray(point.add(direction.scale(0.0001)), direction);
+        //     //     let transparencyColor = continuationRay.trace(scene, depth);
+        //     //     toreturn = toreturn.scale(this.texture.finish.opacity).add(transparencyColor.scale(transparent));
+        //     // }
 
-            // let reflectionAmount = this.texture.finish.reflection;
-            // if (reflectionAmount) {
-            //     let reflectionRay = new Ray(point, reflectionDirection);
-            //     let reflectedColor = reflectionRay.trace(scene, depth);
-            //     toreturn = toreturn.add(reflectedColor.scale(reflectionAmount));
-            // }
-            let kr = this.fresnel(direction, normal, this.texture.finish.refraction);
-            let outside = direction.dot(normal) < 0;
-            let bias = normal.scale(0.0001);
-            if (kr < 1) {
-                let refractionDirection = this.refract(direction, normal, this.texture.finish.refraction);
-                let refractionRayOrigin = outside ? point.subtract(bias) : point.add(bias);
-                let refractionRay = new Ray(refractionRayOrigin, refractionDirection);
-                let refractionColor = refractionRay.trace(scene, depth);
-                toreturn = toreturn.add(refractionColor).scale(1 - kr);
+        //     // let reflectionAmount = this.texture.finish.reflection;
+        //     // if (reflectionAmount) {
+        //     //     let reflectionRay = new Ray(point, reflectionDirection);
+        //     //     let reflectedColor = reflectionRay.trace(scene, depth);
+        //     //     toreturn = toreturn.add(reflectedColor.scale(reflectionAmount));
+        //     // }
+        //     let kr = this.fresnel(direction, normal, this.texture.finish.refraction);
+        //     let outside = direction.dot(normal) < 0;
+        //     let bias = normal.scale(0.0001);
+        //     if (kr < 1) {
+        //         let refractionDirection = this.refract(direction, normal, this.texture.finish.refraction);
+        //         let refractionRayOrigin = outside ? point.subtract(bias) : point.add(bias);
+        //         let refractionRay = new Ray(refractionRayOrigin, refractionDirection);
+        //         let refractionColor = refractionRay.trace(scene, depth);
+        //         toreturn = toreturn.add(refractionColor).scale(1 - kr);
 
-                let reflectionRayOrigin = outside ? point.add(bias) : point.subtract(bias);
-                let reflectionRay = new Ray(reflectionRayOrigin, reflectionDirection);
-                let reflectionColor = reflectionRay.trace(scene, depth);
-                toreturn = toreturn.add(reflectionColor.scale(kr));
-            }
-        } else
-            scene.lights.forEach(light => {
-                let lightDirection = light.position.add(point.invert()).normalize();
-                let cosangle = normal.dot(lightDirection);
-                if (cosangle > 0) {
-                    let shadowed = false;
-                    let distance = light.position.add(point.invert());
-                    let shadowRay = new Ray(point, distance);
-                    distance = distance.length();
-                    for (var i = 0; i < scene.things.length && !shadowed; i++) {
-                        var thing = scene.things[i];
-                        if (thing == this)
-                            continue;
-                        if (thing.intersects(shadowRay)) {
-                            let intersections = thing.findIntersections(shadowRay);
-                            for (var j = 0; j < intersections.length; j++) {
-                                if (intersections[j] > THRESHOLD) {
-                                    if (intersections[j] <= distance)
-                                        shadowed = true;
-                                }
-                                break;
+        //         let reflectionRayOrigin = outside ? point.add(bias) : point.subtract(bias);
+        //         let reflectionRay = new Ray(reflectionRayOrigin, reflectionDirection);
+        //         let reflectionColor = reflectionRay.trace(scene, depth);
+        //         toreturn = toreturn.add(reflectionColor.scale(kr));
+        //     }
+        // } else
+        scene.lights.forEach(light => {
+            let lightDirection = light.position.add(point.invert()).normalize();
+            let cosangle = normal.dot(lightDirection);
+            if (cosangle > 0) {
+                let shadowed = false;
+                let distance = light.position.add(point.invert());
+                let shadowRay = new Ray(point, distance);
+                distance = distance.length();
+                for (var i = 0; i < scene.things.length && !shadowed; i++) {
+                    var thing = scene.things[i];
+                    if (thing == this)
+                        continue;
+                    if (thing.intersects(shadowRay)) {
+                        let intersections = thing.findIntersections(shadowRay);
+                        for (var j = 0; j < intersections.length; j++) {
+                            if (intersections[j] > THRESHOLD) {
+                                if (intersections[j] <= distance)
+                                    shadowed = true;
                             }
-                        }
-                    }
-
-                    if (!shadowed) {
-                        let lighting = color.multiply(light.color).scale(cosangle);
-                        toreturn = toreturn.add(lighting);
-                        if (this.texture.material.reflection) {
-                            let specular = reflectionDirection.dot(lightDirection);
-                            if (specular > 0) {
-                                specular = Math.pow(specular, 10);
-                                toreturn = toreturn.add(light.color.scale(specular * .5));
-                            }
+                            break;
                         }
                     }
                 }
-            });
+
+                if (!shadowed) {
+                    let lighting = color.multiply(light.color).scale(cosangle);
+                    toreturn = toreturn.add(lighting);
+                    if (this.texture.material.reflection) {
+                        let specular = reflectionDirection.dot(lightDirection);
+                        if (specular > 0) {
+                            specular = Math.pow(specular, 10);
+                            toreturn = toreturn.add(light.color.scale(specular * .5));
+                        }
+                    }
+                }
+            }
+        });
         return toreturn;
     };
 }

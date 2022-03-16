@@ -79,23 +79,55 @@ class Tiles extends Material {
 
 class Color extends Material {
 
+    static FromHtml = str => {
+        str = str.replace(/\s/g, ''); // Remove all spaces
+        let cache;
+        // Checks for 6 digit hex and converts string to integer
+        if (cache = /#([\da-fA-F]{2})([\da-fA-F]{2})([\da-fA-F]{2})/.exec(str)) cache = cache.slice(1).map(c => parseInt(c, 16));
+        // Checks for 3 digit hex and converts string to integer
+        else if (cache = /#([\da-fA-F])([\da-fA-F])([\da-fA-F])/.exec(str)) cache = cache.slice(1).map(c => parseInt(c, 16) * 17);
+        // Checks for rgba and converts string to integer/float using unary + operator to save bytes
+        else if (cache = /rgba\(([\d]+),([\d]+),([\d]+),([\d]+|[\d]*.[\d]+)\)/.exec(str)) cache = [+cache[1], +cache[2], +cache[3], +cache[4]];
+        // Checks for rgb and converts string to integer/float using unary + operator to save bytes
+        else if (cache = /rgb\(([\d]+),([\d]+),([\d]+)\)/.exec(str)) cache = [+cache[1], +cache[2], +cache[3]];
+        else return null;
+
+        // Performs RGBA conversion by default
+        if (isNaN(cache[3])) cache[3] = 1;
+
+        // Adds or removes 4th value based on rgba support
+        // Support is flipped twice to prevent erros if
+        // it's not defined
+        return cache.map(c => c / 0xff);
+    }
+
     getColorAt = _ => this;
 
-    static White = new Color(1, 1, 1);
-    static Black = new Color(0, 0, 0);
+    static White = new Color("#fff");
+    static Black = new Color("#000");
     static Gray50 = new Color(0.5, 0.5, 0.5);
-    static Red = new Color(1, 0, 0);
-    static Green = new Color(0, 1, 0);
+    static Red = new Color("rgba(255,0,0,0)");
+    static Green = new Color("rgb(0,255,0)");
     static Blue = new Color(0, 0, 1);
 
     clamp = value => (value > 1 ? 1 : value < 0 ? 0 : value);
 
     constructor(r, g, b, a) {
         super();
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.a = a;
+        if (g == undefined) {
+            let values = Array.isArray(r) ? r : Color.FromHtml(r);
+            if (values) {
+                this.r = values[0];
+                this.g = values[1];
+                this.b = values[2];
+                this.a = values[3];
+            }
+        } else {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            this.a = a;
+        }
     }
 
     clip = function () {
@@ -117,6 +149,8 @@ class Color extends Material {
     scale = (factor) => new Color(this.r * factor, this.g * factor, this.b * factor);
     hex = (value) => Math.floor(0xff * value).toString(16).padStart(2, '0');
     toHexColor = () => `#${this.hex(this.r)}${this.hex(this.g)}${this.hex(this.b)}`;
+    toRgb = () => `rgb(${Math.floor(this.r * 0xff)},${Math.floor(this.g * 0xff)},${Math.floor(this.b * 0xff)})`;
+    toRgba = () => `rgba(${Math.floor(this.r * 0xff)},${Math.floor(this.g * 0xff)},${Math.floor(this.b * 0xff)},${1 - this.a})`;
 }
 
 export { Tiles, Color, Rings, MaterialMap, Finish, Texture };

@@ -6,16 +6,10 @@ import Light from './light.js';
 import Camera from './camera.js';
 
 export class Scene {
-    trace(x, y) {
-        return this.camera.trace(this, x, y).clip();
-    }
-    constructor() {
-        this.camera = new Camera(new Vector(2, 1.5, -5), new Vector(0, 1, 0), 2, 1.5);
-        this.lights = [
-            new Light(new Vector(30, 50, -50), Textures.Color.White),
-            new Light(new Vector(-30, 50, 20), Textures.Color.Gray50),
-            new Light(new Vector(10, 10, -10), Textures.Color.Blue)
-        ];
+
+    static Parse(data) {
+        let camera = new Camera(new Vector(data.camera.position), new Vector(0, 1, 0), 2, 1.5);
+        let lights = data.lights.map(l => new Light(new Vector(l.position), new Textures.Color(l.color)));
 
         let glass = new Textures.Texture(
             new Textures.Color(0.9, 0.9, 1, 0.5),
@@ -25,7 +19,7 @@ export class Scene {
         let chessboard = new Plane(new Vector(0, 1, 0), 0, new Textures.Texture(new Textures.Tiles(Textures.Color.Black, Textures.Color.White)));
         let glassBall = new Sphere(Vector.Y, 1, glass);
         let sky = new Sphere(Vector.O, 1000, new Textures.Texture(new Textures.Color(0.5, 0.6, 1), new Textures.Finish({ ambient: 1 })));
-        this.things = [
+        let things = [
             chessboard, glassBall, sky
             // new Sphere(Vector.O, 100, new Textures.Texture(Textures.Color.Blue)),
             // new Plane(new Vector(0, 1, 0), 0, new Textures.Texture(Textures.Color.Green)),
@@ -47,5 +41,14 @@ export class Scene {
             //     new Sphere(new Vector(2, 1, 0), 1, new Color(0, 0, 1, 0.5)),
             //
         ];
+        return new Scene(camera, lights, things);
+    }
+    trace(x, y) {
+        return this.camera.trace(this, x, y).clip();
+    }
+    constructor(camera, lights, things) {
+        this.camera = camera;
+        this.lights = lights ?? [];
+        this.things = things ?? [];
     }
 }
