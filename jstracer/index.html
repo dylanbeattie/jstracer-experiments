@@ -34,10 +34,31 @@ let scene = {
     { position: [-10,10,-10 ], color: "#fff" },  
   ],
   shapes: [
-  { shape: "sphere", position: [0,1,0], radius: 1, texture: { pigment: { pattern: "solid", color: "#f00" }, 
-    finish: { ambient: 0, diffuse: 1, reflection: 0.2, specular: 0.5 } } },
-  { shape: "sphere", position: [0,2.5,0], radius: 0.5, texture: { finish: { reflection: 0.2 } } },
-  chessboard
+//  { 
+//    shape: "sphere", 
+//    position: [0,1,0], 
+//    radius: 1, 
+//    texture: { 
+//      pigment: { pattern: "solid", color: "#f00" }, 
+//      finish: { ambient: 0, diffuse: 1, reflection: 0.2, specular: 0.5 } 
+//    } 
+//  },
+//  { 
+//    shape: "sphere", 
+//    position: [0,2.5,0], 
+//    radius: 0.5, 
+//    texture: { 
+//      finish: { reflection: 0.2 } 
+//    } 
+//  },
+  chessboard,
+  { 
+    shape: "box",
+    corners: [ [2,0,2], [3,2,3] ],
+    texture: {
+      pigment: { pattern: "solid", color: "#0f0" }
+    }
+  }
   ]
 }
 </textarea>

@@ -2,6 +2,7 @@ import Vector from './vector.js';
 import * as Textures from './color.js';
 import Sphere from './sphere.js';
 import Plane from './plane.js';
+import Box from './box.js';
 import Light from './light.js';
 import Camera from './camera.js';
 
@@ -12,6 +13,7 @@ export class Scene {
         switch (s.shape) {
             case "sphere": return new Sphere(new Vector(s.position), s.radius, texture);
             case "plane": return new Plane(new Vector(s.normal), s.distance, texture);
+            case "box": return new Box(new Vector(s.corners[0]), new Vector(s.corners[1]), texture);
         }
     }
 
