@@ -1,0 +1,53 @@
+{
+  camera: { position: [-2, 3, -10], look_at: [0, 0, 0] },
+  lights: [
+    { position: [0, 10, -10], color: [1, 0, 0] },
+    { position: [10, 15, -10], color: '#0f0' },
+    { position: [-10, 10, -10], color: 'rgb(50,50,255)' }
+  ],
+  shapes: [
+    {
+      shape: 'sphere',
+      position: [0, 1, 0],
+      radius: 1,
+      texture: {
+        pigment: { pattern: 'solid', color: '#f00' },
+        finish: { ambient: 0.2, diffuse: 3, reflection: 0.6, specular: 0.5 }
+      }
+    },
+    {
+      shape: 'plane',
+      normal: [0, 1, 0],
+      distance: 0,
+      texture: {
+        pigment: { pattern: 'tiles', color1: '#009', color2: '#fff' },
+        finish: { reflection: 0.2 }
+      }
+    },
+    {
+      shape: 'sphere',
+      position: [0, 2.5, 0],
+      radius: 0.5,
+      texture: {
+        pigment: { pattern: 'solid', color: 'rgb(120,140,180)' },
+        finish: { reflection: 0.5 }
+      }
+    },
+    {
+      shape: 'sphere',
+      position: [2.5, 0.5, -4],
+      radius: 0.5
+    },
+    {
+      shape: 'box',
+      corners: [
+        [2, 0, -3],
+        [3, 2, 3]
+      ],
+      texture: {
+        pigment: { pattern: 'solid', color: '#0f0' },
+        finish: { ambient: 0.4, diffuse: 0.6, reflection: 0.1 }
+      }
+    }
+  ]
+}

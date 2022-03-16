@@ -11,6 +11,7 @@ self.addEventListener('message', function (msg) {
             let scene = Scene.Parse(data.scene);
             tracer.trace(scene, (y, row, step) => self.postMessage({ message: 'row', y: y, row: row, step: step }));
             self.close();
+            self.postMessage({ message: 'done' });
             break;
         // case 'stop':
         //     console.log('Stopping trace.');
