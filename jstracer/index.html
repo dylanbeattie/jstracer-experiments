@@ -10,16 +10,32 @@
   </canvas>
   <br />
   <textarea id="scene-data" style="position: fixed; top: 600px; left: 0; right: 0; bottom: 0;" spellcheck="false">
-{
-  camera: { position: [-2,2,-10], look_at: [0,0,0] },
+
+let chessboard = { 
+    shape: "plane", 
+    normal: [0,1,0], 
+    distance: 0,
+    texture: { 
+      pigment: {
+        pattern: "tiles",
+        color1: "#000",
+        color2: "#fff"
+      }
+    }
+ }    
+let scene = {  
+  camera: { position: [-2,3,-10], look_at: [0,0,0] },
   lights: [
     { position: [-10,10,0 ], color: [1,0,0] },
     { position: [0,10,-10 ], color: "#0f0" },
     { position: [10,10,0 ], color: "#00f" },  
   ],
   shapes: [
-     { shape: "sphere", position: [0,0,0], radius: 1 },
-     { shape: "plane", normal: [0,1,0], distance: 0 }    
+  { shape: "sphere", position: [0,1,0], radius: 1, texture: { 
+    finish: { reflection: 0.5 } 
+  } },
+  { shape: "sphere", position: [0,2.5,0], radius: 0.5 },
+  chessboard
   ]
 }
 </textarea>
@@ -45,7 +61,7 @@
   }
   function go() {
     let sceneData = document.getElementById('scene-data').innerHTML;
-    sceneData = eval(`let scene = ${sceneData}; scene;`);
+    sceneData = eval(`${sceneData}; scene;`);
     let canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
     ctx.fillStyle = "#000";

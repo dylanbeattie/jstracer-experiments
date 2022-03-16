@@ -1,11 +1,11 @@
 import Vector from './vector.js';
 import { AMBIENCE, THRESHOLD } from './settings.js';
 import { Ray } from "./ray.js";
-import { Color } from "./color.js";
+import { Color, Texture } from "./color.js";
 
 export class Thing {
     constructor(texture) {
-        this.texture = texture;
+        this.texture = texture ?? new Texture();
     }
 
     intersects = (ray) => true;
@@ -74,12 +74,12 @@ export class Thing {
         //     //     toreturn = toreturn.scale(this.texture.finish.opacity).add(transparencyColor.scale(transparent));
         //     // }
 
-        //     // let reflectionAmount = this.texture.finish.reflection;
-        //     // if (reflectionAmount) {
-        //     //     let reflectionRay = new Ray(point, reflectionDirection);
-        //     //     let reflectedColor = reflectionRay.trace(scene, depth);
-        //     //     toreturn = toreturn.add(reflectedColor.scale(reflectionAmount));
-        //     // }
+        let reflectionAmount = this.texture.finish.reflection;
+        if (reflectionAmount) {
+            let reflectionRay = new Ray(point, reflectionDirection);
+            let reflectedColor = reflectionRay.trace(scene, depth);
+            toreturn = toreturn.add(reflectedColor.scale(reflectionAmount));
+        }
         //     let kr = this.fresnel(direction, normal, this.texture.finish.refraction);
         //     let outside = direction.dot(normal) < 0;
         //     let bias = normal.scale(0.0001);

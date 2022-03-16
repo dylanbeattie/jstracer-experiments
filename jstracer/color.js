@@ -12,15 +12,33 @@ class Finish {
 }
 
 class Texture {
+    static ParseFinish(data) {
+        return new Finish(data);
+    }
+
+    static ParsePigment(data = {}) {
+        switch (data.pattern) {
+            case "plain": return new Color(data.color);
+            case "tiles": return new Tiles(new Color(data.color1), new Color(data.color2))
+            default: return Color.Gray50;
+        }
+    }
+
+    static Parse(data = {}) {
+        let pigment = data.pigment ? Texture.ParsePigment(data.pigment) : Color.Gray50;
+        let finish = data.finish ? Texture.ParseFinish(data.finish) : Finish.Default;
+        return new Texture(pigment, finish);
+    }
     constructor(pigment, finish) {
-        this.material = pigment ?? Color.Grey;
+        this.material = pigment ?? Color.Gray50;
         this.finish = finish ?? Finish.Default;
     }
     getColorAt = point => this.material.getColorAt(point);
 }
 
 class Material {
-    getColorAt = point => Color.Grey; constructor() { }
+    constructor() { }
+    getColorAt = point => Color.Grey;
 }
 
 class MaterialMap {

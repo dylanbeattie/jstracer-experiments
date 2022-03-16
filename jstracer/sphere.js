@@ -1,3 +1,4 @@
+// import { Color } from './color.js';
 import { Thing } from './thing.js';
 
 export default class Sphere extends Thing {
