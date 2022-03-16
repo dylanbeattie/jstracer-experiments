@@ -4,6 +4,7 @@ class Finish {
     constructor(options = {}) {
         this.ambient = options.ambient ?? 0.3;
         this.diffuse = options.diffuse ?? 0.7;
+        this.specular = options.specular ?? 0.0;
         this.reflection = options.reflection ?? 0;
         this.refraction = options.refraction ?? 1;
         this.opacity = options.opacity ?? 1;
@@ -18,7 +19,7 @@ class Texture {
 
     static ParsePigment(data = {}) {
         switch (data.pattern) {
-            case "plain": return new Color(data.color);
+            case "solid": return new Color(data.color);
             case "tiles": return new Tiles(new Color(data.color1), new Color(data.color2))
             default: return Color.Gray50;
         }
