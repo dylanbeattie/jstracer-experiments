@@ -6,8 +6,6 @@ class Finish {
         this.diffuse = options.diffuse ?? 0.7;
         this.specular = options.specular ?? 0.0;
         this.reflection = options.reflection ?? 0;
-        this.refraction = options.refraction ?? 1;
-        this.opacity = options.opacity ?? 1;
     }
     static Default = new Finish();
 }
@@ -30,6 +28,7 @@ class Texture {
         let finish = data.finish ? Texture.ParseFinish(data.finish) : Finish.Default;
         return new Texture(pigment, finish);
     }
+
     constructor(pigment, finish) {
         this.material = pigment ?? Color.Gray50;
         this.finish = finish ?? Finish.Default;

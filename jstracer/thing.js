@@ -122,7 +122,7 @@ export class Thing {
 
                 if (!shadowed) {
                     let lighting = color.multiply(light.color).scale(cosangle);
-                    toreturn = toreturn.add(lighting);
+                    toreturn = toreturn.add(lighting.scale(this.texture.finish.diffuse));
                     if (this.texture.finish.specular) {
                         let specular = reflectionDirection.dot(lightDirection);
                         if (specular > 0) {

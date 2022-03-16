@@ -20,6 +20,9 @@ let chessboard = {
         pattern: "tiles",
         color1: "#000",
         color2: "#fff"
+      },
+      finish: {
+        reflection: 0.2
       }
     }
  }    
@@ -32,7 +35,7 @@ let scene = {
   ],
   shapes: [
   { shape: "sphere", position: [0,1,0], radius: 1, texture: { pigment: { pattern: "solid", color: "#f00" }, 
-    finish: { reflection: 0.2, specular: 0.5 } } },
+    finish: { ambient: 0, diffuse: 1, reflection: 0.2, specular: 0.5 } } },
   { shape: "sphere", position: [0,2.5,0], radius: 0.5, texture: { finish: { reflection: 0.2 } } },
   chessboard
   ]
